@@ -1,11 +1,16 @@
-// Функция сравнивает длину строки
+/**Функция создаёт рандомные числа*/
+const randomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+export {randomInteger};
+
+/**Функция сравнивает длину строки*/
 function checksLenght(string, maxLenght) {
   return string.length <= maxLenght;
 }
 checksLenght('проверяемая строка', 20);
 
 
-// Функция проверяет палиндром
+/**Функция проверяет палиндром*/
 function isPalindrome(string) {
   const stringNormal = string.replaceAll(' ', '').toLowerCase();
   let stringReverse = '';
@@ -21,7 +26,7 @@ function isPalindrome(string) {
 isPalindrome('Лёша на полке клопа нашёл ');
 
 
-// Функция извлекает числа
+/**Функция извлекает числа*/
 function createsNumbers(arg) {
   const string = arg.toString();
   let result = '';
