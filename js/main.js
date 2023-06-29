@@ -1,2 +1,5 @@
-import {addPhotos} from './data.js';
+import {addPhotos} from './mock.js';
 addPhotos();
+
+import {renderPictures} from './pictures.js';
+renderPictures(addPhotos());
