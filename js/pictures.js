@@ -4,11 +4,12 @@ const template = templateFragment.querySelector('a');
 
 const renderPicture = (picture) => {
   const element = template.cloneNode(true);
+  const imageElement = element.querySelector('img');
 
-  element.querySelector('img').src = picture.url;
+  imageElement.src = picture.url;
+  imageElement.alt = picture.description;
   element.querySelector('.picture__comments').textContent = picture.comments.length;
   element.querySelector('.picture__likes').textContent = picture.likes;
-  element.querySelector('img').alt = picture.description;
 
   return element;
 };
