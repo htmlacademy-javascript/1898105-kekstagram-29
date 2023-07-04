@@ -38,3 +38,7 @@ function createsNumbers(arg) {
   return parseInt(result, 10);
 }
 createsNumbers('ECMAScript 2022');
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {isEscapeKey};
