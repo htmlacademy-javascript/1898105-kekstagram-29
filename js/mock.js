@@ -78,3 +78,5 @@ const addPhotos = () => {
 
 
 export {addPhotos};
+export {addComment};
+export {addPhoto};
