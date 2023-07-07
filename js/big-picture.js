@@ -9,7 +9,7 @@ const likesCount = document.querySelector('.likes-count');
 const bigPictureCancel = document.querySelector('.big-picture__cancel');
 const pictureCommentsCount = document.querySelector('.comments-count');
 const buttonLoader = document.querySelector('.comments-loader');
-const commentCoount = document.querySelector('.social__comment-count');
+const commentCount = document.querySelector('.social__comment-count');
 
 const onCloseBigPictureClick = () => {
   modalBigPicture.classList.add('hidden');
@@ -28,12 +28,14 @@ const onBigPictureEscKeyDown = (evt) => {
 
 
 const showBigPicture = (picture) => {
-  const { url, likes, comments, description } = picture;
+  buttonLoader.classList.remove('hidden');
   let pack = 5;
-  if (comments.length < pack) {
+  const { url, likes, comments, description } = picture;
+  if (comments.length <= pack) {
     pack = comments.length;
+    buttonLoader.classList.add('hidden');
   }
-  commentCoount.textContent = `${pack } из ${ comments.length } комментариев`;
+  commentCount.textContent = `${pack} из ${comments.length} комментариев`;
   modalBigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
@@ -44,13 +46,15 @@ const showBigPicture = (picture) => {
   renderComments(comments.slice(0, pack));
 
   const onButtonLoaderClick = () => {
+    buttonLoader.classList.remove('hidden');
     document.querySelector('.social__comments').textContent = '';
     pack = pack + 5;
     if (pack >= comments.length) {
       pack = comments.length;
+      buttonLoader.classList.add('hidden');
     }
     renderComments(comments.slice(0, pack));
-    commentCoount.textContent = `${pack } из ${ comments.length } комментариев`;
+    commentCount.textContent = `${pack} из ${comments.length} комментариев`;
   };
 
   buttonLoader.addEventListener('click', onButtonLoaderClick);

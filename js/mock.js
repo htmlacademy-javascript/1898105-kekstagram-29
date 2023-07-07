@@ -46,14 +46,6 @@ const description = [
 ];
 
 
-/** Создаёт один комментарий*/
-// const addComment = () => ({
-//   id: randomInteger(IdComment.MIN, IdComment.MAX),
-//   avatar: `img/avatar-${randomInteger(Avatars.MIN, Avatars.MAX)}.svg`,
-//   message: MESSAGES[randomInteger(0, MESSAGES.length - 1)],
-//   name: names[randomInteger(0, names.length - 1)]
-// });
-
 const generateComments = () => {
   const comments = [];
   for (let i = 1; i < randomInteger(0, COMMENT_COUNT); i++) {
@@ -67,17 +59,6 @@ const generateComments = () => {
   return comments;
 };
 
-/** Создаёт одно фото*/
-// const addPhoto = (id) => ({
-//   id,
-//   url: `photos/${id}.jpg`,
-//   description: description[randomInteger(0, description.length - 1)],
-//   likes: randomInteger(Likes.MIN, Likes.MAX),
-//   comments: Array.from(
-//     { length: randomInteger(0, COMMENT_COUNT) },
-//     addComment,
-//   ),
-// });
 
 const addPhoto = (id) => ({
   id,
