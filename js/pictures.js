@@ -6,7 +6,6 @@ const template = templateFragment.querySelector('a');
 const renderPicture = (picture) => {
   const {url, likes, comments, description} = picture;
   const element = template.cloneNode(true);
-
   element.querySelector('.picture__img').src = url;
   element.querySelector('.picture__img').alt = description;
   element.querySelector('.picture__comments').textContent = comments.length;
