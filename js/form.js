@@ -10,11 +10,27 @@ const closeButtonImg = document.querySelector('.img-upload__cancel');
 const imgForm = document.querySelector('.img-upload__form');
 const inputHash = imgForm.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
+const publishButton = document.querySelector('.img-upload__submit');
+
+const PublishButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
 
 const pristine = new Pristine(imgForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
+
+const blockPublishButton = () => {
+  publishButton.disabled = true;
+  publishButton.textContent = PublishButtonText.SENDING;
+};
+
+const unblockPublishButton = () => {
+  publishButton.disabled = false;
+  publishButton.textContent = PublishButtonText.IDLE;
+};
 
 const normaliseTags = (tagString) => tagString
   .trim()
@@ -53,11 +69,13 @@ const setUserFormSubmit = (onSuccess) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
+      blockPublishButton();
       sendData(new FormData(evt.target))
         .then(onSuccess)
         .catch((err) => {
           showAlert(err.message, 'red');
-        });
+        })
+        .finally(unblockPublishButton);
     }
   });
 };
