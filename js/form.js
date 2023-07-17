@@ -1,4 +1,6 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, showAlert } from './util.js';
+import { sendData } from './data.js';
+
 const MAX_HASHTAGE_COUNT = 5;
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const body = document.querySelector('body');
@@ -25,7 +27,7 @@ const validHashCount = (value) => normaliseTags(value).length <= MAX_HASHTAGE_CO
 
 const validateuUniqueHash = (value) => {
   const lowerCaseTags = normaliseTags(value).map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set (lowerCaseTags).size;
+  return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
 pristine.addValidator(
@@ -46,11 +48,19 @@ pristine.addValidator(
   true
 );
 
-
-imgForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+const setUserFormSubmit = (onSuccess) => {
+  imgForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch((err) => {
+          showAlert(err.message, 'red');
+        });
+    }
+  });
+};
 
 const onCloseButtonImgEscKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -92,3 +102,5 @@ closeButtonImg.addEventListener('click', onCloseButtonImgClick);
 document.addEventListener('keydown', onCloseButtonImgEscKeyDown);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
+setUserFormSubmit(onCloseButtonImgClick);
+
