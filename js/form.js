@@ -1,5 +1,7 @@
 import { isEscapeKey, showAlert } from './util.js';
 import { sendData } from './data.js';
+import { resetScale } from './scale.js';
+import { resetEffects } from './filters.js';
 
 const MAX_HASHTAGE_COUNT = 5;
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -97,6 +99,8 @@ const onUploadButtonChange = () => {
 const onCloseButtonImgClick = () => {
   overlayImg.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  resetEffects();
+  resetScale();
   imgForm.reset();
   pristine.reset();
   document.removeEventListener('keydown', onCloseButtonImgEscKeyDown);
@@ -121,4 +125,3 @@ document.addEventListener('keydown', onCloseButtonImgEscKeyDown);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
 setUserFormSubmit(onCloseButtonImgClick);
-
