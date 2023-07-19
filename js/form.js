@@ -5,14 +5,43 @@ import { resetEffects } from './filters.js';
 
 const MAX_HASHTAGE_COUNT = 5;
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
-const body = document.querySelector('body');
-const buttonUpload = document.querySelector('.img-upload__input ');
+const body = document.querySelector('body');//
+const buttonUpload = document.querySelector('.img-upload__input');
 const overlayImg = document.querySelector('.img-upload__overlay');
 const closeButtonImg = document.querySelector('.img-upload__cancel');
 const imgForm = document.querySelector('.img-upload__form');
 const inputHash = imgForm.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 const publishButton = document.querySelector('.img-upload__submit');
+const successMessage = document.querySelector('#success').content.querySelector('.success');
+const errorMessage = document.querySelector('#error').content.querySelector('.error');
+
+const showMessage = (resulMessage) => {
+  body.append(resulMessage);
+};
+
+const messageRemove = (resulMessage) => {
+  resulMessage.remove();
+};
+
+const overlayImgHidden = () => {
+  overlayImg.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const onMessageEscKeyDown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    messageRemove(successMessage);
+  }
+};
+
+const onMessageErrorEscKeyDown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    messageRemove(errorMessage);
+  }
+};
 
 const PublishButtonText = {
   IDLE: 'Опубликовать',
@@ -72,21 +101,48 @@ const setUserFormSubmit = (onSuccess) => {
     const isValid = pristine.validate();
     if (isValid) {
       blockPublishButton();
+      showMessage(successMessage);
       sendData(new FormData(evt.target))
         .then(onSuccess)
         .catch((err) => {
           showAlert(err.message, 'red');
         })
         .finally(unblockPublishButton);
+    } else {
+      showMessage(errorMessage);
+      document.addEventListener('keydown', onMessageErrorEscKeyDown);
     }
   });
 };
 
+const onButtonRemoveClick = (evt) => {
+  if (evt.target.classList.contains('success__button')) {
+    evt.preventDefault();
+    messageRemove(successMessage);
+    document.removeEventListener('keydown', onMessageEscKeyDown);
+  } else if (!evt.target.classList.contains('error__button')) {
+    messageRemove(errorMessage);
+    document.removeEventListener('keydown', onMessageErrorEscKeyDown);
+  }
+};
+
+const onClic = (evt) => {
+  if (!evt.target.classList.contains('success__inner')) {
+    messageRemove(successMessage);
+  } else if (!evt.target.classList.contains('error__inner')) {
+    messageRemove(errorMessage);
+  }
+};
+
+
 const onCloseButtonImgEscKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    overlayImg.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+    overlayImgHidden();
+    resetEffects();
+    resetScale();
+    imgForm.reset();
+    pristine.reset();
   }
 };
 
@@ -97,8 +153,7 @@ const onUploadButtonChange = () => {
 };
 
 const onCloseButtonImgClick = () => {
-  overlayImg.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+  overlayImgHidden();
   resetEffects();
   resetScale();
   imgForm.reset();
@@ -121,7 +176,13 @@ const onInputHashFocusEscKeyDown = (evt) => {
 
 buttonUpload.addEventListener('change', onUploadButtonChange);
 closeButtonImg.addEventListener('click', onCloseButtonImgClick);
-document.addEventListener('keydown', onCloseButtonImgEscKeyDown);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
 setUserFormSubmit(onCloseButtonImgClick);
+successMessage.addEventListener('click', onButtonRemoveClick);
+errorMessage.addEventListener('click', onButtonRemoveClick);
+document.addEventListener('click', onClic);
+// document.addEventListener('keydown', onMessageErrorEscKeyDown);
+document.addEventListener('keydown', onMessageEscKeyDown);
+
+export {messageRemove};

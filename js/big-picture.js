@@ -28,7 +28,9 @@ const onBigPictureEscKeyDown = (evt) => {
 
 
 const showBigPicture = (picture) => {
+  // buttonLoader.classList.remove('hidden');
   buttonLoader.classList.remove('hidden');
+  document.body.classList.add('modal-open');
   let pack = 5;
   const { url, likes, comments, description } = picture;
   if (comments.length <= pack) {
