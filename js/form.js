@@ -1,18 +1,44 @@
 import { isEscapeKey } from './util.js';
+import { sendData } from './data.js';
+import { resetScale } from './scale.js';
+import { resetEffects } from './filters.js';
+import {showSuccessMessage, showErrorMessage} from './messages.js';
+
 const MAX_HASHTAGE_COUNT = 5;
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
-const body = document.querySelector('body');
-const buttonUpload = document.querySelector('.img-upload__input ');
+const body = document.querySelector('body');//
+const buttonUpload = document.querySelector('.img-upload__input');
 const overlayImg = document.querySelector('.img-upload__overlay');
 const closeButtonImg = document.querySelector('.img-upload__cancel');
 const imgForm = document.querySelector('.img-upload__form');
 const inputHash = imgForm.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
+const publishButton = document.querySelector('.img-upload__submit');
+
+const overlayImgHidden = () => {
+  overlayImg.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const PublishButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
 
 const pristine = new Pristine(imgForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
+
+const blockPublishButton = () => {
+  publishButton.disabled = true;
+  publishButton.textContent = PublishButtonText.SENDING;
+};
+
+const unblockPublishButton = () => {
+  publishButton.disabled = false;
+  publishButton.textContent = PublishButtonText.IDLE;
+};
 
 const normaliseTags = (tagString) => tagString
   .trim()
@@ -25,7 +51,7 @@ const validHashCount = (value) => normaliseTags(value).length <= MAX_HASHTAGE_CO
 
 const validateuUniqueHash = (value) => {
   const lowerCaseTags = normaliseTags(value).map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set (lowerCaseTags).size;
+  return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
 pristine.addValidator(
@@ -46,17 +72,33 @@ pristine.addValidator(
   true
 );
 
-
-imgForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+const setUserFormSubmit = (onSuccess) => {
+  imgForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockPublishButton();
+      showSuccessMessage();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch(() => {
+          showErrorMessage();
+        })
+        .finally(unblockPublishButton);
+    } else {
+      showErrorMessage();
+    }
+  });
+};
 
 const onCloseButtonImgEscKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    overlayImg.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+    overlayImgHidden();
+    resetEffects();
+    resetScale();
+    imgForm.reset();
+    pristine.reset();
   }
 };
 
@@ -67,8 +109,9 @@ const onUploadButtonChange = () => {
 };
 
 const onCloseButtonImgClick = () => {
-  overlayImg.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+  overlayImgHidden();
+  resetEffects();
+  resetScale();
   imgForm.reset();
   pristine.reset();
   document.removeEventListener('keydown', onCloseButtonImgEscKeyDown);
@@ -89,6 +132,6 @@ const onInputHashFocusEscKeyDown = (evt) => {
 
 buttonUpload.addEventListener('change', onUploadButtonChange);
 closeButtonImg.addEventListener('click', onCloseButtonImgClick);
-document.addEventListener('keydown', onCloseButtonImgEscKeyDown);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
+setUserFormSubmit(onCloseButtonImgClick);

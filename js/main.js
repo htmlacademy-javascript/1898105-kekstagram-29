@@ -1,9 +1,14 @@
 import './form.js';
-import {resetEffects} from './filters.js';
-import {addPhotos} from './mock.js';
-import {renderPictures} from './pictures.js';
-import {resetScale} from './scale.js';
-resetScale();
-renderPictures(addPhotos());
-resetEffects();
+import { showAlert } from './util.js';
+import { renderPictures } from './pictures';
+import { getData } from './data.js';
+getData()
+  .then((pictures) => {
+    renderPictures(pictures);
+  })
+  .catch(
+    (err) => {
+      showAlert(err.message, 'red');
+    }
+  );
 

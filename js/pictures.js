@@ -21,7 +21,6 @@ const renderPicture = (picture) => {
   return element;
 };
 
-
 const renderPictures = (pictures) => {
   const fragment = document.createDocumentFragment();
 
@@ -33,5 +32,3 @@ const renderPictures = (pictures) => {
 };
 
 export {renderPictures};
-
-
