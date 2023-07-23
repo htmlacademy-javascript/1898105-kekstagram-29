@@ -48,6 +48,16 @@ const showAlert = (message, color) => {
   }, ALERT_SHOW_TIME);
 };
 
+
+const debounce = (callback, timeoutDelay = 500) => {
+
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 /**Функция извлекает числа*/
 function createsNumbers(arg) {
   const string = arg.toString();
@@ -63,5 +73,4 @@ createsNumbers('ECMAScript 2022');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {isEscapeKey};
-export {showAlert};
+export {isEscapeKey, showAlert, debounce};

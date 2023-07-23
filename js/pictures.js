@@ -1,7 +1,8 @@
 import { showBigPicture } from './big-picture.js';
+
 const picturesContainer = document.querySelector('.pictures');
 const templateFragment = document.querySelector('#picture').content;
-const template = templateFragment.querySelector('a');
+const template = templateFragment.querySelector('.picture');
 
 const renderPicture = (picture) => {
   const {url, likes, comments, description} = picture;
@@ -21,14 +22,17 @@ const renderPicture = (picture) => {
   return element;
 };
 
-const renderPictures = (pictures) => {
-  const fragment = document.createDocumentFragment();
 
+const renderPictures = (pictures) => {
+  picturesContainer.querySelectorAll('.picture').forEach((element) => element.remove());
+  const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
-    fragment.append(renderPicture(picture));
+    const element = renderPicture(picture);
+    fragment.append(element);
   });
 
   picturesContainer.append(fragment);
+
 };
 
-export {renderPictures};
+export { renderPictures };
