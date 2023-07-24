@@ -1,26 +1,13 @@
 import './form.js';
-import { showAlert, debounce } from './util.js';
-import { renderPictures } from './pictures.js';
+import { showAlert } from './util.js';
+import { renderGallery } from './renderGallery.js';
 import { getData } from './data.js';
 import { init as initFilter, getSortPictures } from './sort.js';
 
-// getData()
-//   .then((pictures) => {
-//     renderPictures(pictures);
-//   })
-//   .catch(
-//     (err) => {
-//       showAlert(err.message, 'red');
-//     }
-//   );
-
 try {
   const data = await getData();
-  const debouncerRenderPictures = debounce(renderPictures);
-  initFilter(data, debouncerRenderPictures());
-  renderPictures(getSortPictures());
+  initFilter(data);
+  renderGallery(getSortPictures());
 } catch (err) {
   showAlert(err.message, 'red');
 }
-
-

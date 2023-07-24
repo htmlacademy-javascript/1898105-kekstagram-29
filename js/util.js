@@ -50,7 +50,6 @@ const showAlert = (message, color) => {
 
 
 const debounce = (callback, timeoutDelay = 500) => {
-
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

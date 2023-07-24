@@ -129,7 +129,6 @@ const onInputHashFocusEscKeyDown = (evt) => {
   }
 };
 
-
 buttonUpload.addEventListener('change', onUploadButtonChange);
 closeButtonImg.addEventListener('click', onCloseButtonImgClick);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
