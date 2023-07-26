@@ -10,9 +10,9 @@ const Sorting = {
 
 const sortElement = document.querySelector('.img-filters');
 
+const debouncerRenderPictures = debounce(renderGallery);
 const sortRandom = () => Math.random() - 0.5;
 const sortByComments = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
-
 let currentSort = Sorting.DEFAULT;
 let pictures = [];
 
@@ -24,7 +24,7 @@ const getSortPictures = () => {
     case Sorting.DISCUSSED:
       return [...pictures].sort(sortByComments);
     default:
-      return [...pictures];
+      return pictures;
   }
 };
 
@@ -43,7 +43,6 @@ const setOnSortElementClick = () => {
     clickedButton.classList.add('img-filters__button--active');
     currentSort = clickedButton.id;
     container.querySelectorAll('.picture').forEach((element) => element.remove());
-    const debouncerRenderPictures = debounce(renderGallery);
     debouncerRenderPictures(getSortPictures());
   });
 };

@@ -149,3 +149,5 @@ closeButtonImg.addEventListener('click', onCloseButtonImgClick);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
 setUserFormSubmit(onCloseButtonImgClick);
+
+export {setUserFormSubmit};

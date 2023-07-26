@@ -1,6 +1,5 @@
 import { randomInteger } from './util.js';
 
-
 const PHOTO_COUNT = 25;
 const COMMENT_COUNT = 125;
 const MESSAGES = [
