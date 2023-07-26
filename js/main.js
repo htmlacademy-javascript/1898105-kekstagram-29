@@ -1,14 +1,16 @@
 import './form.js';
 import { showAlert } from './util.js';
-import { renderPictures } from './pictures';
+import { renderGallery } from './renderGallery.js';
 import { getData } from './data.js';
+import { init as initFilter, getSortPictures } from './sort.js';
+
 getData()
   .then((pictures) => {
-    renderPictures(pictures);
+    initFilter(pictures);
+    renderGallery(getSortPictures());
   })
   .catch(
     (err) => {
       showAlert(err.message, 'red');
     }
   );
-

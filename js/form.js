@@ -5,16 +5,18 @@ import { resetEffects } from './filters.js';
 import {showSuccessMessage, showErrorMessage} from './messages.js';
 
 const MAX_HASHTAGE_COUNT = 5;
+const FILE_TYPES = ['png', 'jpg', 'jpeg'];
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
-const body = document.querySelector('body');//
+const body = document.querySelector('body');
 const buttonUpload = document.querySelector('.img-upload__input');
 const overlayImg = document.querySelector('.img-upload__overlay');
 const closeButtonImg = document.querySelector('.img-upload__cancel');
 const imgForm = document.querySelector('.img-upload__form');
+const photoPreview = imgForm.querySelector('.img-upload__preview img');
 const inputHash = imgForm.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 const publishButton = document.querySelector('.img-upload__submit');
-
+const effectsPreviews = imgForm.querySelectorAll('.effects__preview');
 const overlayImgHidden = () => {
   overlayImg.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -102,7 +104,20 @@ const onCloseButtonImgEscKeyDown = (evt) => {
   }
 };
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 const onUploadButtonChange = () => {
+  const file = buttonUpload.files[0];
+
+  if (file && isValidType(file)) {
+    photoPreview.src = URL.createObjectURL(file);
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${photoPreview.src}')`;
+    });
+  }
   overlayImg.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onCloseButtonImgEscKeyDown);
@@ -129,9 +144,10 @@ const onInputHashFocusEscKeyDown = (evt) => {
   }
 };
 
-
 buttonUpload.addEventListener('change', onUploadButtonChange);
 closeButtonImg.addEventListener('click', onCloseButtonImgClick);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
 setUserFormSubmit(onCloseButtonImgClick);
+
+export {setUserFormSubmit};

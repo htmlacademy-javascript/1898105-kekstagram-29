@@ -1,31 +1,8 @@
 const ALERT_SHOW_TIME = 5000;
 
-/**Функция создаёт рандомные числа*/
 const randomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-export {randomInteger};
-
-/**Функция сравнивает длину строки*/
-function checksLenght(string, maxLenght) {
-  return string.length <= maxLenght;
-}
-checksLenght('проверяемая строка', 20);
-
-
-/**Функция проверяет палиндром*/
-function isPalindrome(string) {
-  const stringNormal = string.replaceAll(' ', '').toLowerCase();
-  let stringReverse = '';
-
-  for (let i = stringNormal.length - 1; i >= 0; i--) {
-    stringReverse += stringNormal.at([i]);
-  }
-
-  return stringNormal === stringReverse;
-
-}
-
-isPalindrome('Лёша на полке клопа нашёл ');
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showAlert = (message, color) => {
   const alertContainer = document.createElement('div');
@@ -48,20 +25,13 @@ const showAlert = (message, color) => {
   }, ALERT_SHOW_TIME);
 };
 
-/**Функция извлекает числа*/
-function createsNumbers(arg) {
-  const string = arg.toString();
-  let result = '';
-  for (let i = 0; i < string.length; i++) {
-    if (!Number.isNaN(parseInt(string[i], 10))) {
-      result += string[i];
-    }
-  }
-  return parseInt(result, 10);
-}
-createsNumbers('ECMAScript 2022');
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
-export {isEscapeKey};
-export {showAlert};
+export {isEscapeKey, showAlert, debounce, randomInteger};
