@@ -80,19 +80,15 @@ const setUserFormSubmit = (onSuccess) => {
     const isValid = pristine.validate();
     if (isValid) {
       blockPublishButton();
-      showSuccessMessage();
       sendData(new FormData(evt.target))
         .then(onSuccess)
         .catch(() => {
           showErrorMessage();
         })
         .finally(unblockPublishButton);
-    } else {
-      showErrorMessage();
     }
   });
 };
-
 const onCloseButtonImgEscKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -124,6 +120,7 @@ const onUploadButtonChange = () => {
 };
 
 const onCloseButtonImgClick = () => {
+  showSuccessMessage();
   overlayImgHidden();
   resetEffects();
   resetScale();

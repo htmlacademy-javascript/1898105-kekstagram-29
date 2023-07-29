@@ -26,8 +26,8 @@ const onBigPictureEscKeyDown = (evt) => {
   }
 };
 
-
 const showBigPicture = (picture) => {
+
   buttonLoader.classList.remove('hidden');
   document.body.classList.add('modal-open');
   let pack = 5;
@@ -36,16 +36,15 @@ const showBigPicture = (picture) => {
     pack = comments.length;
     buttonLoader.classList.add('hidden');
   }
-  commentCount.textContent = `${pack} из ${comments.length} комментариев`;
+  pictureCommentsCount.textContent = comments.length;
+  commentCount.textContent = `${pack} из ${pictureCommentsCount.textContent} комментариев`;
   modalBigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   bigPictureImage.src = url;
   pictureCaption.textContent = description;
   likesCount.textContent = likes;
-  pictureCommentsCount.textContent = comments.length;
   renderComments(comments.slice(0, pack));
-
   const onButtonLoaderClick = () => {
 
     buttonLoader.classList.remove('hidden');
@@ -56,7 +55,7 @@ const showBigPicture = (picture) => {
       buttonLoader.classList.add('hidden');
     }
     renderComments(comments.slice(0, pack));
-    commentCount.textContent = `${pack} из ${comments.length} комментариев`;
+    commentCount.textContent = `${pack} из ${pictureCommentsCount.textContent} комментариев`;
   };
 
   buttonLoader.addEventListener('click', onButtonLoaderClick);
