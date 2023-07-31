@@ -2,12 +2,12 @@ import './form.js';
 import { showAlert } from './util.js';
 import { renderGallery } from './renderGallery.js';
 import { getData } from './data.js';
-import { init as initFilter, getSortPictures } from './sort.js';
+import { init as initFilter } from './sort.js';
 
 getData()
   .then((pictures) => {
     initFilter(pictures);
-    renderGallery(getSortPictures());
+    renderGallery(pictures);
   })
   .catch(
     (err) => {

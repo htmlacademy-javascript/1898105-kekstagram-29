@@ -58,7 +58,6 @@ const slider = document.querySelector('.effect-level__slider');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const effectValue = document.querySelector('.effect-level__value');
 
-
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const showSlider = () => {
@@ -94,7 +93,6 @@ const onEffectsChange = (evt) => {
   updateSlider();
 };
 
-
 const onSliderUpdate = () => {
   const sliderValue = slider.noUiSlider.get();
   imgUpload.style.filter = isDefault()
@@ -102,7 +100,6 @@ const onSliderUpdate = () => {
     : `${chosenEffect.filter}(${sliderValue}${chosenEffect.unit})`;
   effectValue.value = sliderValue;
 };
-
 
 const resetEffects = () => {
   chosenEffect = DEFAULT_EFFECT;
