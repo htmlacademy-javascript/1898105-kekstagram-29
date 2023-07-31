@@ -3,20 +3,20 @@ import { debounce } from './util';
 
 const PICTURE__COUNT = 10;
 const Sorting = {
-  DEFAUIT: 'filter-default',
+  DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed'
 };
 
-const sortElement = document.querySelector('.img-filters');
+const CLASS__ACTIVE = 'img-filters__button--active';
+const selectedFilter = document.querySelector('.img-filters');
+const filterPictures = document.querySelector('.pictures');
 
-const debouncerRenderPictures = debounce(renderGallery);
 const sortRandom = () => Math.random() - 0.5;
 const sortByComments = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 let currentSort = Sorting.DEFAULT;
 let pictures = [];
 
-const container = document.querySelector('.pictures');
 const getSortPictures = () => {
   switch (currentSort) {
     case Sorting.RANDOM:
@@ -28,30 +28,30 @@ const getSortPictures = () => {
   }
 };
 
-const setOnSortElementClick = () => {
-  sortElement.addEventListener('click', (evt) => {
-    if (!evt.target.classList.contains('img-filters__button')) {
-      return;
-    }
-    const clickedButton = evt.target;
-    if (clickedButton.id === currentSort) {
-      return;
-    }
-    sortElement
-      .querySelector('.img-filters__button--active')
-      .classList.remove('img-filters__button--active');
-    clickedButton.classList.add('img-filters__button--active');
-    currentSort = clickedButton.id;
-    container.querySelectorAll('.picture').forEach((element) => element.remove());
-    debouncerRenderPictures(getSortPictures());
-  });
-};
+const debouncedRenderPictures = debounce(() => {
+  filterPictures.querySelectorAll('.picture').forEach((element) => element.remove());
+  renderGallery(getSortPictures());
+});
+
+selectedFilter.addEventListener('click', (evt) => {
+  if (!evt.target.classList.contains('img-filters__button')) {
+    return;
+  }
+  const clickedButton = evt.target;
+  if (clickedButton.id === currentSort) {
+    return;
+  }
+  selectedFilter
+    .querySelector(`.${CLASS__ACTIVE}`)
+    .classList.remove(CLASS__ACTIVE);
+  clickedButton.classList.add(CLASS__ACTIVE);
+  currentSort = clickedButton.id;
+  debouncedRenderPictures();
+});
 
 const init = (loaderPictures) => {
-  sortElement.classList.remove('img-filters--inactive');
-  pictures = [...loaderPictures];
-  setOnSortElementClick();
+  selectedFilter.classList.remove('img-filters--inactive');
+  pictures = loaderPictures;
 };
 
-export {init, getSortPictures};
-
+export { init, getSortPictures };

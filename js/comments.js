@@ -1,7 +1,5 @@
-
 const pictureCommentsList = document.querySelector('.social__comments');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
-
 
 const renderComments = (comments) => {
   const fragmentComments = document.createDocumentFragment();

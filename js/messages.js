@@ -18,7 +18,7 @@ function documentEscapeHandler (evt) {
 }
 
 function documentClickHandler (evt) {
-  if (!evt.target.closest('.success__inner')) {
+  if (!evt.target.closest('.success__inner') && !evt.target.closest('.error__inner')) {
     messageRemove();
   }
 }

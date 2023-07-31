@@ -89,6 +89,7 @@ const setUserFormSubmit = (onSuccess) => {
     }
   });
 };
+
 const onCloseButtonImgEscKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
