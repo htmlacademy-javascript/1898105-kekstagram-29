@@ -17,7 +17,7 @@ const inputHash = imgForm.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 const publishButton = document.querySelector('.img-upload__submit');
 const effectsPreviews = imgForm.querySelectorAll('.effects__preview');
-const overlayImgHidden = () => {
+const hideOverlayImg = () => {
   overlayImg.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
@@ -42,22 +42,22 @@ const unblockPublishButton = () => {
   publishButton.textContent = PublishButtonText.IDLE;
 };
 
-const normaliseTags = (tagString) => tagString
+const normalizeTags = (tagString) => tagString
   .trim()
   .split(' ')
   .filter((tag) => Boolean(tag.length));
 
-const validHashTag = (value) => normaliseTags(value).every((tag) => VALID_HASHTAG.test(tag));
+const validateHashTag = (value) => normalizeTags(value).every((tag) => VALID_HASHTAG.test(tag));
 
-const validHashCount = (value) => normaliseTags(value).length <= MAX_HASHTAGE_COUNT;
+const validateHashCount = (value) => normalizeTags(value).length <= MAX_HASHTAGE_COUNT;
 
 const validateuUniqueHash = (value) => {
-  const lowerCaseTags = normaliseTags(value).map((tag) => tag.toLowerCase());
+  const lowerCaseTags = normalizeTags(value).map((tag) => tag.toLowerCase());
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
 pristine.addValidator(
-  inputHash, validHashCount, 'Много хештегов',
+  inputHash, validateHashCount, 'Много хештегов',
   3,
   true
 );
@@ -69,7 +69,7 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  inputHash, validHashTag, 'Не правильный хештег',
+  inputHash, validateHashTag, 'Не правильный хештег',
   2,
   true
 );
@@ -93,7 +93,7 @@ const setUserFormSubmit = (onSuccess) => {
 const onCloseButtonImgEscKeyDown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    overlayImgHidden();
+    hideOverlayImg();
     resetEffects();
     resetScale();
     imgForm.reset();
@@ -122,7 +122,7 @@ const onUploadButtonChange = () => {
 
 const onCloseButtonImgClick = () => {
   showSuccessMessage();
-  overlayImgHidden();
+  hideOverlayImg();
   resetEffects();
   resetScale();
   imgForm.reset();
@@ -147,5 +147,4 @@ closeButtonImg.addEventListener('click', onCloseButtonImgClick);
 textDescription.addEventListener('keydown', onTextFocusEscKeyDown);
 inputHash.addEventListener('keydown', onInputHashFocusEscKeyDown);
 setUserFormSubmit(onCloseButtonImgClick);
-
 export {setUserFormSubmit};
