@@ -1,7 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-const randomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showAlert = (message, color) => {
@@ -33,4 +31,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {isEscapeKey, showAlert, debounce, randomInteger};
+export {isEscapeKey, showAlert, debounce };

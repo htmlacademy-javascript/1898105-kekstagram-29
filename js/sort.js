@@ -49,9 +49,9 @@ selectedFilter.addEventListener('click', (evt) => {
   debouncedRenderPictures();
 });
 
-const init = (loaderPictures) => {
+const initialize = (loaderPictures) => {
   selectedFilter.classList.remove('img-filters--inactive');
   pictures = loaderPictures;
 };
 
-export { init, getSortPictures };
+export { initialize, getSortPictures };
